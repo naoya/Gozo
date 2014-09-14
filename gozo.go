@@ -83,6 +83,11 @@ func (gozo Gozo) SendCapture() (url string, err error) {
 func (gozo Gozo) SendFile(filename string) (url string, err error) {
 	img := new(Image)
 	img.name = filename
+
+	if err = img.ToPng(); err != nil {
+		return
+	}
+
 	if err = img.RemoveProfile(); err != nil {
 		return
 	}
