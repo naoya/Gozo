@@ -16,16 +16,16 @@ type Gozo struct {
 	secretAccessKey string
 	bucketName      string
 	region          aws.Region
-	rootUrl         string
+	rootURL         string
 }
 
-func NewGozo(accessKey string, secretAccessKey string, bucketName string, region aws.Region, rootUrl string) *Gozo {
+func NewGozo(accessKey string, secretAccessKey string, bucketName string, region aws.Region, rootURL string) *Gozo {
 	gozo := &Gozo{
 		accessKey,
 		secretAccessKey,
 		bucketName,
 		region,
-		rootUrl,
+		rootURL,
 	}
 	return gozo
 }
@@ -53,7 +53,7 @@ func (gozo Gozo) SendImage(filename string) (url string, err error) {
 		return
 	}
 
-	url = gozo.rootUrl + path
+	url = gozo.rootURL + path
 	return
 }
 

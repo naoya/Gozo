@@ -11,18 +11,18 @@ import (
 func main() {
 	config := pit.Get("cdn.bloghackers.net")
 
-	var accessKeyId, secretAccessKey string
+	var accessKeyID, secretAccessKey string
 	if config["aws_access_key_id"] == "" {
-		accessKeyId = os.Getenv("AWS_ACCESS_KEY_ID")
+		accessKeyID = os.Getenv("AWS_ACCESS_KEY_ID")
 		secretAccessKey = os.Getenv("AWS_SECRET_ACCESS_KEY")
 	} else {
-		accessKeyId = config["aws_access_key_id"]
+		accessKeyID = config["aws_access_key_id"]
 		secretAccessKey = config["aws_secret_access_key"]
 	}
 
 	// TODO: 設定ファイルとかで設定できるように
 	gozo := NewGozo(
-		accessKeyId,
+		accessKeyID,
 		secretAccessKey,
 		"files.bloghackers.net",
 		aws.APNortheast,
