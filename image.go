@@ -23,8 +23,6 @@ func (img *Image) Name() (name string) {
 
 func (img *Image) Capture() (err error) {
 	img.name = fmt.Sprintf("/tmp/gozo-image-%d-%d.png", os.Getuid(), os.Getpid())
-
-	// TODO: サブシェルで Ctrl+C しても終わらないな
 	err = exec.Command("screencapture", "-i", img.name).Run()
 	return
 }
