@@ -11,7 +11,6 @@ import (
 func main() {
 	config := pit.Get("cdn.bloghackers.net")
 
-	// FIXME: これもちっとまともに書けないの･･･
 	var accessKeyId, secretAccessKey string
 	if config["aws_access_key_id"] == "" {
 		accessKeyId = os.Getenv("AWS_ACCESS_KEY_ID")
