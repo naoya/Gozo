@@ -47,7 +47,6 @@ func (gozo Gozo) SendImage(filename string) (url string, err error) {
 	s3client := s3.New(auth, gozo.region)
 	bucket := s3client.Bucket(gozo.bucketName)
 
-	// FIXME: バグってる
 	path := "images/" + hexdigest(fmt.Sprintf("%s-%d", filename, time.Now().Unix())) + ".png"
 	err = bucket.Put(path, data, "image/png", s3.PublicRead)
 	if err != nil {
@@ -93,8 +92,6 @@ func (gozo Gozo) SendFile(filename string) (url string, err error) {
 }
 
 func hexdigest(s string) string {
-	hasher := sha1.New()
-	hasher.Write([]byte(s))
-	hash := sha1.Sum(nil)
+	hash := sha1.Sum([]byte(s))
 	return hex.EncodeToString(hash[:])
 }
