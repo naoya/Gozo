@@ -17,18 +17,18 @@ type Image struct {
 	name string
 }
 
-func (img *Image) Name() (name string) {
+func (img Image) Name() (name string) {
 	return img.name
 }
 
 func (img *Image) Capture() (err error) {
 	img.name = fmt.Sprintf("/tmp/gozo-image-%d-%d.png", os.Getuid(), os.Getpid())
-	err = exec.Command("screencapture", "-i", img.name).Run()
+	err = exec.Command("screencapture", "-i", img.Name()).Run()
 	return
 }
 
-func (img *Image) GetProperty(kind string) (result int, err error) {
-	b, err := exec.Command("sips", "-g", kind, img.name).Output()
+func (img Image) GetProperty(kind string) (result int, err error) {
+	b, err := exec.Command("sips", "-g", kind, img.Name()).Output()
 	if err != nil {
 		return
 	}
@@ -40,39 +40,39 @@ func (img *Image) GetProperty(kind string) (result int, err error) {
 	return
 }
 
-func (img *Image) PixelWidth() (width int, err error) {
+func (img Image) PixelWidth() (width int, err error) {
 	return img.GetProperty("pixelWidth")
 }
 
-func (img *Image) DpiWidth() (width int, err error) {
+func (img Image) DpiWidth() (width int, err error) {
 	return img.GetProperty("dpiWidth")
 }
 
-func (img *Image) DpiHeight() (height int, err error) {
+func (img Image) DpiHeight() (height int, err error) {
 	return img.GetProperty("dpiHeight")
 }
 
-func (img *Image) RemoveProfile() (err error) {
+func (img Image) RemoveProfile() (err error) {
 	err = exec.Command(
 		"sips",
 		"-d",
 		"profile",
 		"--deleteColorManagementProperties",
-		img.name,
+		img.Name(),
 	).Run()
 	return
 }
 
-func (img *Image) DownScale() (err error) {
+func (img Image) DownScale() (err error) {
 	width, err := img.PixelWidth()
 	if err != nil {
 		return
 	}
-	err = exec.Command("sips", "--resampleWidth", strconv.Itoa(width/2), img.name).Run()
+	err = exec.Command("sips", "--resampleWidth", strconv.Itoa(width/2), img.Name()).Run()
 	return
 }
 
-func (img *Image) IsRetinaSize() (result bool, err error) {
+func (img Image) IsRetinaSize() (result bool, err error) {
 	w, err := img.DpiWidth()
 	if err != nil {
 		return
@@ -87,17 +87,17 @@ func (img *Image) IsRetinaSize() (result bool, err error) {
 	return
 }
 
-func (img *Image) ToPng() (err error) {
-	err = exec.Command("sips", "-s", "format", "png", img.name).Run()
+func (img Image) ToPng() (err error) {
+	err = exec.Command("sips", "-s", "format", "png", img.Name()).Run()
 	return
 }
 
-func (img *Image) Exists() bool {
+func (img Image) Exists() bool {
 	_, err := os.Stat(img.Name())
 	return !os.IsNotExist(err)
 }
 
-func (img *Image) Remove() (err error) {
+func (img Image) Remove() (err error) {
 	return os.Remove(img.Name())
 }
 
