@@ -9,7 +9,13 @@ import (
 )
 
 func main() {
-	config := pit.Get("cdn.bloghackers.net")
+	var url string
+	var err error
+
+	config, err := pit.Get("cdn.bloghackers.net")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	var accessKeyID, secretAccessKey string
 	if config["aws_access_key_id"] == "" {
@@ -28,9 +34,6 @@ func main() {
 		aws.APNortheast,
 		"http://cdn.bloghackers.net/",
 	)
-
-	var url string
-	var err error
 
 	if len(os.Args) == 1 {
 		url, err = gozo.SendCapture()
